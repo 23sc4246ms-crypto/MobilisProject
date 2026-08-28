@@ -20,7 +20,7 @@
 /public/storage
 /storage/*.key
 /storage/pail
-/vendor
+# /vendor (committed for Vercel PHP serverless - no composer install in build)
 _ide_helper.php
 Homestead.json
 Homestead.yaml
