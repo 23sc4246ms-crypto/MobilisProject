@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+    <!-- Yellow Squircle Background -->
+    <rect width="200" height="200" rx="56" fill="#FFC80A"/>
+    
+    <!-- Exact Geometric Mobilis 'M' from Brand Specs -->
+    <g fill="#040814">
+        <!-- Left Slanted Element -->
+        <path d="M 55 76 L 86 76 L 118 128 L 94 146 L 76 146 L 55 116 Z" />
+        <!-- Bottom Left Square Notch -->
+        <rect x="55" y="130" width="16" height="16" rx="2" />
+        <!-- Right Vertical Pillar with Angular Top -->
+        <path d="M 124 100 L 145 76 L 145 146 L 124 146 Z" />
+    </g>
+</svg>

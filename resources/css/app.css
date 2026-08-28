@@ -1,0 +1,653 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+@source '../js/**/*.js';
+
+@theme {
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-display: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
+
+    --color-navy-950: #030712;
+    --color-navy-900: #060e20;
+    --color-navy-850: #0a1532;
+    --color-navy-800: #0e1d44;
+    --color-navy-750: #142658;
+    --color-navy-700: #1c3272;
+
+    --color-yellow-gold: #ffc700;
+    --color-yellow-amber: #f59e0b;
+    --color-yellow-light: #fef08a;
+    --color-yellow-glow: rgba(255, 199, 0, 0.35);
+}
+
+html {
+    scroll-behavior: smooth;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ==========================================
+   THEME STYLES (DARK & LIGHT MODE)
+========================================== */
+html.dark, html:not(.light) {
+    background-color: #030712;
+    color: #f8fafc;
+}
+
+html.light {
+    background-color: #f8fafc;
+    color: #0f172a;
+}
+
+/* ------------------------------------------
+   LIGHT MODE: REFINED YELLOW & DARK BLUE HARMONY
+------------------------------------------ */
+html.light body {
+    background-color: #f8fafc !important;
+    color: #0f172a !important;
+}
+
+/* Background Gradients & Ambient Glow */
+html.light .bg-radial-hero {
+    background: radial-gradient(circle at 50% -10%, rgba(255, 199, 0, 0.2) 0%, rgba(241, 245, 249, 0.8) 45%, #f8fafc 80%) !important;
+}
+
+html.light .bg-grid-pattern {
+    background-image: 
+        linear-gradient(to right, rgba(10, 21, 50, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(10, 21, 50, 0.04) 1px, transparent 1px) !important;
+}
+
+/* Sticky Header / Navbar */
+html.light header.sticky {
+    background: rgba(255, 255, 255, 0.92) !important;
+    border-bottom: 1px solid rgba(10, 21, 50, 0.08) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    box-shadow: 0 4px 20px -4px rgba(10, 21, 50, 0.05) !important;
+}
+
+html.light header .font-display {
+    color: #060e20 !important;
+}
+
+html.light header nav a {
+    color: #334155 !important;
+}
+
+html.light header nav a:hover {
+    color: #d97706 !important;
+}
+
+html.light header button.glass-card {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #0f172a !important;
+}
+
+/* Typography & Headings in Light Mode */
+html.light h1, 
+html.light h2, 
+html.light h3:not(#gallery-modal-title), 
+html.light h4 {
+    color: #060e20 !important;
+}
+
+html.light .text-white {
+    color: #060e20 !important;
+}
+
+html.light .text-slate-300,
+html.light .text-slate-400 {
+    color: #475569 !important;
+}
+
+html.light .text-slate-200 {
+    color: #1e293b !important;
+}
+
+/* Warm Golden Amber Gradient for Light Mode */
+html.light .text-gradient-yellow {
+    background: linear-gradient(135deg, #92400e 0%, #b45309 30%, #d97706 70%, #f59e0b 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+/* Glassmorphism Cards in Light Mode */
+html.light .glass-card {
+    background: #ffffff !important;
+    border: 1px solid rgba(10, 21, 50, 0.08) !important;
+    box-shadow: 0 10px 30px -5px rgba(10, 21, 50, 0.06), 0 4px 12px -2px rgba(10, 21, 50, 0.03) !important;
+}
+
+html.light .glass-card-yellow {
+    background: rgba(255, 199, 0, 0.1) !important;
+    border: 1px solid rgba(217, 119, 6, 0.35) !important;
+}
+
+html.light .glass-card-yellow span {
+    color: #92400e !important;
+}
+
+/* Section Backgrounds */
+html.light #apps,
+html.light section.bg-navy-900\/60 {
+    background-color: #f1f5f9 !important;
+    border-color: #e2e8f0 !important;
+}
+
+html.light section.bg-navy-950:not(footer) {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+}
+
+/* Category Badges & Pills */
+html.light .bg-yellow-gold\/15 {
+    background-color: rgba(255, 199, 0, 0.14) !important;
+    border-color: rgba(217, 119, 6, 0.35) !important;
+    color: #92400e !important;
+}
+
+/* Quick-Finder Bar in Light Mode */
+html.light #hero-quick-search-btn {
+    background-color: #ffc700 !important;
+    color: #030712 !important;
+    box-shadow: 0 10px 25px -5px rgba(255, 199, 0, 0.5) !important;
+}
+
+html.light .bg-navy-950\/80 {
+    background-color: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+html.light select {
+    color: #0f172a !important;
+}
+
+html.light select option {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+}
+
+/* Fleet Showroom & Car Cards in Light Mode */
+html.light [data-car-category] {
+    background-color: #ffffff !important;
+    border: 1px solid rgba(10, 21, 50, 0.08) !important;
+    box-shadow: 0 10px 30px -5px rgba(10, 21, 50, 0.06), 0 4px 12px -2px rgba(10, 21, 50, 0.03) !important;
+}
+
+html.light [data-car-category]:hover {
+    border-color: #f59e0b !important;
+    box-shadow: 0 20px 45px -10px rgba(10, 21, 50, 0.12), 0 0 25px -5px rgba(245, 158, 11, 0.25) !important;
+}
+
+html.light [data-car-category] h3 {
+    color: #060e20 !important;
+}
+
+html.light [data-car-category]:hover h3 {
+    color: #d97706 !important;
+}
+
+html.light [data-car-category] span.text-yellow-gold {
+    color: #b45309 !important;
+}
+
+html.light [data-car-category] .border-y {
+    border-color: #e2e8f0 !important;
+    color: #1e293b !important;
+}
+
+html.light [data-car-category] .border-y span.text-yellow-gold {
+    color: #d97706 !important;
+}
+
+/* Feature Badges / Pills on Car Cards */
+html.light [data-car-category] span.bg-navy-950 {
+    background-color: #f1f5f9 !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #334155 !important;
+}
+
+html.light [data-car-category] span.bg-navy-950:hover {
+    background-color: #fffbeb !important;
+    border-color: #f59e0b !important;
+    color: #0a1532 !important;
+}
+
+/* Bottom Price Box on Car Cards (Luxury Navy Contrast) */
+html.light [data-car-category] .bg-navy-950\/90 {
+    background: linear-gradient(135deg, #060e20 0%, #0a1532 100%) !important;
+    border: 1px solid rgba(255, 199, 0, 0.25) !important;
+    box-shadow: 0 6px 20px -3px rgba(10, 21, 50, 0.18) !important;
+}
+
+html.light [data-car-category] .bg-navy-950\/90 .text-white {
+    color: #ffffff !important;
+}
+
+html.light [data-car-category] .bg-navy-950\/90 .text-yellow-gold {
+    color: #ffc700 !important;
+}
+
+html.light [data-car-category] .bg-navy-950\/90 .text-slate-400 {
+    color: #cbd5e1 !important;
+}
+
+html.light [data-car-category] .bg-navy-950\/90 .bg-white\/10 {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Car Carousel Overlays in Light Mode (Keep high contrast) */
+html.light [data-car-category] [data-car-carousel] .bg-navy-950\/85,
+html.light [data-car-category] [data-car-carousel] .bg-navy-950\/75 {
+    background-color: rgba(6, 14, 32, 0.85) !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+html.light [data-car-category] [data-car-carousel] [data-car-carousel-prev],
+html.light [data-car-category] [data-car-carousel] [data-car-carousel-next] {
+    background-color: rgba(6, 14, 32, 0.85) !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+html.light [data-car-category] [data-car-carousel] [data-car-carousel-prev]:hover,
+html.light [data-car-category] [data-car-carousel] [data-car-carousel-next]:hover {
+    background-color: #ffc700 !important;
+    color: #030712 !important;
+    border-color: #ffc700 !important;
+}
+
+/* Category Filter Tabs in Light Mode */
+html.light .bg-navy-900.border.border-white\/10 {
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 15px -3px rgba(10, 21, 50, 0.05) !important;
+}
+
+html.light [data-fleet-filter].bg-navy-800,
+html.light [data-faq-filter].bg-navy-800 {
+    background-color: #f1f5f9 !important;
+    color: #475569 !important;
+}
+
+html.light [data-fleet-filter].bg-navy-800:hover,
+html.light [data-faq-filter].bg-navy-800:hover {
+    background-color: #e2e8f0 !important;
+    color: #060e20 !important;
+}
+
+html.light #fleet-prev-btn,
+html.light #fleet-next-btn,
+html.light #testimonial-prev,
+html.light #testimonial-next,
+html.light #role-slide-prev,
+html.light #role-slide-next {
+    background-color: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #0f172a !important;
+    box-shadow: 0 4px 12px -2px rgba(10, 21, 50, 0.08) !important;
+}
+
+html.light #fleet-prev-btn:hover,
+html.light #fleet-next-btn:hover,
+html.light #testimonial-prev:hover,
+html.light #testimonial-next:hover,
+html.light #role-slide-prev:hover,
+html.light #role-slide-next:hover {
+    background-color: #ffc700 !important;
+    color: #030712 !important;
+    border-color: #ffc700 !important;
+}
+
+/* Role Slides Section in Light Mode */
+html.light [data-role-slide] {
+    background: #ffffff !important;
+    border: 1px solid rgba(10, 21, 50, 0.08) !important;
+    box-shadow: 0 20px 45px -10px rgba(10, 21, 50, 0.08) !important;
+}
+
+html.light [data-role-slide] .bg-navy-950\/90 {
+    background: rgba(6, 14, 32, 0.9) !important;
+    color: #ffffff !important;
+}
+
+html.light [data-role-slide] .bg-navy-950\/90 .text-white {
+    color: #ffffff !important;
+}
+
+html.light .bg-navy-950.max-w-2xl {
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+/* Estimator Calculator in Light Mode */
+html.light #calculator .bg-navy-900\/95 {
+    background-color: #ffffff !important;
+    border: 1px solid rgba(10, 21, 50, 0.08) !important;
+    box-shadow: 0 20px 45px -10px rgba(10, 21, 50, 0.08) !important;
+}
+
+html.light #calculator .bg-navy-950 {
+    background-color: #f8fafc !important;
+    border-color: #e2e8f0 !important;
+}
+
+html.light #calculator select,
+html.light #calculator input[type=range] {
+    border-color: #cbd5e1 !important;
+}
+
+html.light #calculator .bg-navy-950\/90 {
+    background-color: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+html.light #calculator .p-8.rounded-3xl.bg-navy-950 {
+    background: linear-gradient(135deg, #060e20 0%, #0a1532 100%) !important;
+    border: 1px solid rgba(255, 199, 0, 0.25) !important;
+}
+
+html.light #calculator .p-8.rounded-3xl.bg-navy-950 .text-slate-300,
+html.light #calculator .p-8.rounded-3xl.bg-navy-950 .text-slate-400 {
+    color: #cbd5e1 !important;
+}
+
+/* FAQ Accordion in Light Mode */
+html.light .faq-item {
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 15px -3px rgba(10, 21, 50, 0.04) !important;
+}
+
+html.light .faq-icon {
+    background-color: #f1f5f9 !important;
+    color: #b45309 !important;
+}
+
+html.light .faq-content {
+    border-color: #f1f5f9 !important;
+    color: #475569 !important;
+}
+
+/* Testimonials in Light Mode */
+html.light [data-testimonial-slide] {
+    background-color: #ffffff !important;
+    border: 1px solid rgba(217, 119, 6, 0.3) !important;
+    box-shadow: 0 20px 45px -10px rgba(10, 21, 50, 0.08) !important;
+}
+
+html.light [data-testimonial-slide] blockquote {
+    color: #1e293b !important;
+}
+
+/* Modals & Photo Gallery in Light Mode */
+html.light .mobilis-modal .glass-card {
+    background-color: #ffffff !important;
+    border: 1px solid rgba(10, 21, 50, 0.12) !important;
+    box-shadow: 0 25px 60px -15px rgba(10, 21, 50, 0.25) !important;
+}
+
+html.light .mobilis-modal .bg-navy-900,
+html.light .mobilis-modal .bg-navy-900\/80,
+html.light .mobilis-modal .bg-navy-900\/90 {
+    background-color: #f8fafc !important;
+    border-color: #e2e8f0 !important;
+}
+
+html.light .mobilis-modal .text-white {
+    color: #060e20 !important;
+}
+
+html.light #car-gallery-modal .bg-black {
+    background-color: #030712 !important;
+}
+
+html.light #car-gallery-modal #gallery-modal-prev,
+html.light #car-gallery-modal #gallery-modal-next {
+    background-color: rgba(6, 14, 32, 0.85) !important;
+    color: #ffffff !important;
+}
+
+html.light #car-gallery-modal #gallery-modal-prev:hover,
+html.light #car-gallery-modal #gallery-modal-next:hover {
+    background-color: #ffc700 !important;
+    color: #030712 !important;
+}
+
+/* Mobile Navigation Drawer in Light Mode */
+html.light #mobile-menu {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: -10px 0 30px rgba(10, 21, 50, 0.15) !important;
+}
+
+html.light #mobile-menu .text-white {
+    color: #060e20 !important;
+}
+
+html.light #mobile-menu .mobile-nav-link {
+    color: #334155 !important;
+}
+
+html.light #mobile-menu .mobile-nav-link:hover {
+    color: #d97706 !important;
+}
+
+/* Footer in Light Mode (Deep Navy Anchor for Luxury Contrast) */
+html.light footer {
+    background-color: #030712 !important;
+    color: #94a3b8 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+html.light footer .text-white {
+    color: #ffffff !important;
+}
+
+html.light footer .text-slate-300,
+html.light footer .text-slate-400 {
+    color: #94a3b8 !important;
+}
+
+html.light footer a:hover {
+    color: #ffc700 !important;
+}
+
+html.light footer .bg-navy-900 {
+    background-color: #060e20 !important;
+    border-color: rgba(255, 199, 0, 0.25) !important;
+}
+
+/* Buttons in Light Mode */
+html.light .bg-yellow-gold {
+    background-color: #ffc700 !important;
+    color: #030712 !important;
+}
+
+html.light .bg-yellow-gold:hover {
+    background-color: #f59e0b !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #060e20;
+}
+html.light ::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+    background: #142658;
+    border-radius: 6px;
+    border: 2px solid #060e20;
+}
+html.light ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border: 2px solid #f1f5f9;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #ffc700;
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Luxury Glow & Hover Effects */
+.glow-yellow {
+    box-shadow: 0 0 35px -5px rgba(255, 199, 0, 0.45);
+}
+.glow-yellow-sm {
+    box-shadow: 0 0 20px -3px rgba(255, 199, 0, 0.28);
+}
+.glow-yellow-lg {
+    box-shadow: 0 0 60px -10px rgba(255, 199, 0, 0.55);
+}
+.glow-card {
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 25px -5px rgba(14, 29, 68, 0.5);
+}
+.glow-card-hover {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.glow-card-hover:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px -5px rgba(255, 199, 0, 0.25);
+}
+
+/* Glassmorphism Classes */
+.glass-card {
+    background: rgba(10, 21, 50, 0.65);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.glass-card-subtle {
+    background: rgba(14, 29, 68, 0.45);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.glass-card-yellow {
+    background: rgba(255, 199, 0, 0.06);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 199, 0, 0.25);
+}
+
+/* Luxury Gradient Text */
+.text-gradient-yellow {
+    background: linear-gradient(135deg, #FFF9C4 0%, #FFC700 50%, #F59E0B 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+html.light .text-gradient-yellow {
+    background: linear-gradient(135deg, #B45309 0%, #D97706 50%, #F59E0B 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.text-gradient-white {
+    background: linear-gradient(180deg, #FFFFFF 0%, #CBD5E1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Ambient Gradients */
+.bg-radial-hero {
+    background: radial-gradient(circle at 50% -10%, rgba(255, 199, 0, 0.15) 0%, rgba(10, 21, 50, 0.4) 45%, rgba(3, 7, 18, 0) 75%);
+}
+
+.bg-grid-pattern {
+    background-size: 50px 50px;
+    background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+}
+
+/* Custom Range Slider */
+input[type=range] {
+    -webkit-appearance: none;
+    background: #0e1d44;
+    border-radius: 9999px;
+    height: 8px;
+}
+html.light input[type=range] {
+    background: #e2e8f0;
+}
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #ffc700;
+    cursor: pointer;
+    box-shadow: 0 0 12px rgba(255, 199, 0, 0.6);
+    border: 2px solid #030712;
+    transition: transform 0.15s ease;
+}
+input[type=range]::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+}
+
+/* Keyframe Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn {
+    animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideLeft {
+    from { opacity: 0; transform: translateX(25px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+.animate-slideLeft {
+    animation: slideLeft 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideRight {
+    from { opacity: 0; transform: translateX(-25px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+.animate-slideRight {
+    animation: slideRight 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes pulse-subtle {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.88; transform: scale(1.02); }
+}
+.animate-pulse-subtle {
+    animation: pulse-subtle 4s infinite ease-in-out;
+}
+
+@keyframes float-smooth {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+}
+.animate-float-smooth {
+    animation: float-smooth 4.5s infinite ease-in-out;
+}
+
+@keyframes bounce-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+.animate-bounce-slow {
+    animation: bounce-slow 3s infinite ease-in-out;
+}
