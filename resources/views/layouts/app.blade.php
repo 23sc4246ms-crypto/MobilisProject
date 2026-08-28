@@ -29,8 +29,14 @@
         }
     </script>
 
-    <!-- Vite Assets -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- Production Compiled Tailwind CSS & Interactive Scripts (Serverless-Safe Inlining) -->
+    <style>
+        {!! Vite::content('resources/css/app.css') !!}
+    </style>
+
+    <script type="module">
+        {!! Vite::content('resources/js/app.js') !!}
+    </script>
 </head>
 <body class="bg-navy-950 text-slate-100 font-sans antialiased selection:bg-yellow-gold selection:text-navy-950 overflow-x-hidden transition-colors duration-300">
 
