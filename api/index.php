@@ -1,5 +1,10 @@
 <?php
 
+use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
+
+define('LARAVEL_START', microtime(true));
+
 // Ensure serverless environment defaults
 if (! getenv('APP_KEY')) {
     putenv('APP_KEY=base64:KWwd+/q+9jzk7rMwpOf7Yf27oOSVShdlKhASMDbeaKg=');
@@ -31,6 +36,11 @@ if (! getenv('LOG_CHANNEL')) {
     $_ENV['LOG_CHANNEL'] = 'stderr';
 }
 
+if (! getenv('APP_MAINTENANCE_DRIVER')) {
+    putenv('APP_MAINTENANCE_DRIVER=array');
+    $_ENV['APP_MAINTENANCE_DRIVER'] = 'array';
+}
+
 // Temporary writable storage in /tmp
 $tmpStorage = '/tmp/storage';
 $dirs = [
@@ -56,5 +66,12 @@ putenv('APP_PACKAGES_CACHE=/tmp/packages.php');
 putenv('APP_ROUTES_CACHE=/tmp/routes.php');
 putenv('APP_SERVICES_CACHE=/tmp/services.php');
 
-// Forward to Laravel front controller
-require __DIR__.'/../public/index.php';
+// Register Composer autoloader
+require __DIR__.'/../vendor/autoload.php';
+
+// Bootstrap Laravel
+/** @var Application $app */
+$app = require_once __DIR__.'/../bootstrap/app.php';
+
+// Handle incoming HTTP request and output response
+$app->handleRequest(Request::capture());
