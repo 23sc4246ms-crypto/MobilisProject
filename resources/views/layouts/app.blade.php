@@ -69,8 +69,8 @@
                 <!-- Official Brand Logo with Generous Right Margin -->
                 <div class="flex items-center">
                     <a href="{{ route('mobilis.home') }}" class="flex items-center gap-3.5 group pr-4 sm:pr-8">
-                        <div class="relative w-12 h-12 rounded-2xl bg-yellow-gold shadow-xl shadow-yellow-gold/25 group-hover:glow-yellow transition-all duration-300 flex items-center justify-center p-2 flex-shrink-0">
-                            <img src="{{ asset('images/logo.svg') }}" alt="Mobilis Official Logo" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300">
+                        <div class="relative w-12 h-12 rounded-2xl bg-yellow-gold shadow-xl shadow-yellow-gold/25 group-hover:glow-yellow transition-all duration-300 flex items-center justify-center p-2 flex-shrink-0" style="width: 48px; height: 48px;">
+                            <img src="{{ asset('images/logo.svg') }}" alt="Mobilis Official Logo" width="32" height="32" style="max-width: 100%; max-height: 100%;" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300">
                         </div>
                         <div>
                             <div class="flex items-center gap-2">
@@ -95,13 +95,13 @@
                 <!-- Action Buttons -->
                 <div class="hidden sm:flex items-center gap-4">
                     <button type="button" data-open-modal="qr-download-modal" class="px-4 py-2.5 rounded-xl glass-card text-slate-200 hover:text-white hover:border-yellow-gold/50 text-xs font-bold flex items-center gap-2 transition-all">
-                        <svg class="w-4 h-4 text-yellow-gold" fill="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 text-yellow-gold" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm13-2h3v3h-3v-3zm0 5h3v3h-3v-3zm-5-5h3v3h-3v-3zm0 5h3v3h-3v-3z"></path>
                         </svg>
                         <span>QR Code</span>
                     </button>
                     <a href="{{ route('mobilis.download') }}" data-direct-download="all" class="px-6 py-3 rounded-xl bg-yellow-gold hover:bg-yellow-amber text-navy-950 font-black text-xs uppercase tracking-wider flex items-center gap-2 shadow-xl glow-yellow-sm hover:glow-yellow transition-all transform hover:-translate-y-0.5">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                         </svg>
                         <span>DOWNLOAD MOBILIS APP</span>
@@ -111,12 +111,12 @@
                 <!-- Mobile Menu Toggle -->
                 <div class="flex lg:hidden items-center gap-2">
                     <button type="button" data-open-modal="qr-download-modal" class="p-2.5 rounded-xl glass-card text-yellow-gold" aria-label="QR Code">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm13-2h3v3h-3v-3zm0 5h3v3h-3v-3zm-5-5h3v3h-3v-3zm0 5h3v3h-3v-3z"></path>
                         </svg>
                     </button>
                     <button id="mobile-nav-toggle" type="button" class="p-3 rounded-xl glass-card text-slate-200 hover:text-white" aria-label="Toggle Menu">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <svg class="w-6 h-6" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
                     </button>
@@ -131,13 +131,13 @@
         <div>
             <div class="flex items-center justify-between pb-6 border-b border-white/10">
                 <div class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 rounded-xl bg-yellow-gold p-1.5 flex items-center justify-center">
-                        <img src="{{ asset('images/logo.svg') }}" alt="Mobilis Logo" class="w-full h-full object-contain">
+                    <div class="w-9 h-9 rounded-xl bg-yellow-gold p-1.5 flex items-center justify-center" style="width: 36px; height: 36px;">
+                        <img src="{{ asset('images/logo.svg') }}" alt="Mobilis Logo" width="24" height="24" style="max-width: 100%; max-height: 100%;" class="w-full h-full object-contain">
                     </div>
                     <span class="font-black text-xl text-white font-display">MOBILIS</span>
                 </div>
                 <button id="mobile-nav-close" class="p-2 rounded-lg text-slate-400 hover:text-white">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <svg class="w-6 h-6" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
@@ -197,8 +197,8 @@
                 <!-- Brand Info -->
                 <div class="lg:col-span-2 space-y-5">
                     <div class="flex items-center gap-3.5">
-                        <div class="w-11 h-11 rounded-2xl bg-yellow-gold p-2 flex items-center justify-center shadow-xl">
-                            <img src="{{ asset('images/logo.svg') }}" alt="Mobilis Logo" class="w-full h-full object-contain">
+                        <div class="w-11 h-11 rounded-2xl bg-yellow-gold p-2 flex items-center justify-center shadow-xl" style="width: 44px; height: 44px;">
+                            <img src="{{ asset('images/logo.svg') }}" alt="Mobilis Logo" width="28" height="28" style="max-width: 100%; max-height: 100%;" class="w-full h-full object-contain">
                         </div>
                         <div>
                             <span class="text-3xl font-black text-white font-display tracking-tight">MOBILIS</span>
