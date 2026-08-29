@@ -1,31 +1,40 @@
 <!-- ======================================================== -->
-<!-- 1. UNIFIED QR CODE QUICK DOWNLOAD MODAL -->
+<!-- 1. DESKTOP RESTRICTION / PHONE-EXCLUSIVE QR DOWNLOAD MODAL -->
 <!-- ======================================================== -->
-<div id="qr-download-modal" class="mobilis-modal hidden fixed inset-0 z-50 overflow-y-auto bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
-    <div class="relative w-full max-w-lg glass-card bg-navy-900 border border-white/15 rounded-3xl p-7 sm:p-9 shadow-2xl animate-fadeIn text-center">
+<div id="desktop-mobile-exclusive-modal" class="mobilis-modal hidden fixed inset-0 z-50 overflow-y-auto bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
+    <div class="relative w-full max-w-xl glass-card bg-navy-900 border border-yellow-gold/40 rounded-3xl p-7 sm:p-10 shadow-2xl animate-fadeIn text-center glow-yellow-sm">
         
         <!-- Close Button -->
-        <button type="button" data-close-modal class="absolute top-6 right-6 p-2 rounded-xl text-slate-400 hover:text-white bg-slate-800/60 hover:bg-slate-800 transition-colors">
+        <button type="button" data-close-modal class="absolute top-6 right-6 p-2.5 rounded-2xl text-slate-400 hover:text-white bg-slate-800/80 hover:bg-slate-800 transition-colors" aria-label="Close modal">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
         </button>
 
-        <div class="mb-6">
-            <span class="px-3.5 py-1 rounded-full bg-yellow-gold/15 text-yellow-gold text-xs font-black border border-yellow-gold/30 uppercase tracking-wider">
-                All-In-One Mobilis App
-            </span>
-            <h3 class="text-2xl font-black text-white font-display mt-2.5">
-                Scan QR Code with Mobile
-            </h3>
-            <p class="text-slate-300 text-xs mt-1.5">
-                Point your smartphone camera at the code below to directly download the single Mobilis App for Renters, Drivers, and Vehicle Hosts.
-            </p>
+        <!-- Phone Exclusive Badge -->
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-yellow-gold/15 text-yellow-gold text-xs font-black border border-yellow-gold/30 uppercase tracking-widest mb-4">
+            <span class="w-2 h-2 rounded-full bg-yellow-gold animate-ping"></span>
+            <span>📱 EXCLUSIVE FOR PHONE APPS</span>
+        </div>
+
+        <h3 class="text-2xl sm:text-3xl font-black text-white font-display">
+            Scan to Download on Your Phone
+        </h3>
+        
+        <p class="text-slate-300 text-xs sm:text-sm mt-2 max-w-md mx-auto leading-relaxed">
+            The Mobilis App is built exclusively for <span class="text-yellow-gold font-bold">Android & iOS smartphones</span>. Desktop installation is not supported.
+        </p>
+
+        <!-- Desktop Indicator Pill -->
+        <div class="my-4 inline-flex items-center gap-2 px-3.5 py-1 rounded-xl bg-navy-950/80 border border-white/10 text-[11px] text-slate-400">
+            <span class="text-slate-300">🖥️ Desktop / Laptop Detected</span>
+            <span>•</span>
+            <span class="text-yellow-gold font-semibold">Please scan with mobile device</span>
         </div>
 
         <!-- High Resolution QR Code with Logo Badge in Center -->
-        <div class="space-y-6">
-            <div class="relative w-52 h-52 mx-auto p-4 rounded-3xl bg-white shadow-2xl flex items-center justify-center border-4 border-yellow-gold glow-yellow-sm">
+        <div class="my-6">
+            <div class="relative w-56 h-56 mx-auto p-4 rounded-3xl bg-white shadow-2xl flex items-center justify-center border-4 border-yellow-gold glow-yellow">
                 <!-- QR Code Pattern -->
                 <svg class="w-full h-full text-slate-900" viewBox="0 0 100 100" fill="currentColor">
                     <!-- Corners -->
@@ -67,6 +76,105 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- 3 Simple Scan Steps -->
+        <div class="grid grid-cols-3 gap-2.5 text-center text-xs mb-6">
+            <div class="p-2.5 rounded-2xl bg-navy-950/80 border border-white/5">
+                <span class="text-yellow-gold font-bold block text-sm">1</span>
+                <span class="text-slate-300 text-[11px] block mt-0.5">Open Phone Camera</span>
+            </div>
+            <div class="p-2.5 rounded-2xl bg-navy-950/80 border border-white/5">
+                <span class="text-yellow-gold font-bold block text-sm">2</span>
+                <span class="text-slate-300 text-[11px] block mt-0.5">Scan the QR Code</span>
+            </div>
+            <div class="p-2.5 rounded-2xl bg-navy-950/80 border border-white/5">
+                <span class="text-yellow-gold font-bold block text-sm">3</span>
+                <span class="text-slate-300 text-[11px] block mt-0.5">Install Mobilis APK</span>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="space-y-3">
+            <button type="button" id="copy-download-link-btn" class="w-full py-3.5 rounded-2xl bg-yellow-gold hover:bg-yellow-amber text-navy-950 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl glow-yellow transition-all">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                </svg>
+                <span id="copy-btn-text">Copy Mobile Download Link</span>
+            </button>
+
+            <!-- Optional Developer/Testing Bypass -->
+            <div class="pt-2">
+                <a href="{{ route('mobilis.download', ['force' => 1]) }}" class="text-[11px] text-slate-500 hover:text-slate-300 underline transition-colors">
+                    Developer testing? Download APK directly to PC &rarr;
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ======================================================== -->
+<!-- 1B. UNIFIED QR CODE MODAL (STANDARD) -->
+<!-- ======================================================== -->
+<div id="qr-download-modal" class="mobilis-modal hidden fixed inset-0 z-50 overflow-y-auto bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="relative w-full max-w-lg glass-card bg-navy-900 border border-white/15 rounded-3xl p-7 sm:p-9 shadow-2xl animate-fadeIn text-center">
+        
+        <!-- Close Button -->
+        <button type="button" data-close-modal class="absolute top-6 right-6 p-2 rounded-xl text-slate-400 hover:text-white bg-slate-800/60 hover:bg-slate-800 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+
+        <div class="mb-6">
+            <span class="px-3.5 py-1 rounded-full bg-yellow-gold/15 text-yellow-gold text-xs font-black border border-yellow-gold/30 uppercase tracking-wider">
+                All-In-One Mobilis App
+            </span>
+            <h3 class="text-2xl font-black text-white font-display mt-2.5">
+                Scan QR Code with Mobile
+            </h3>
+            <p class="text-slate-300 text-xs mt-1.5">
+                Point your smartphone camera at the code below to directly download the single Mobilis App for Renters, Drivers, and Vehicle Hosts.
+            </p>
+        </div>
+
+        <!-- High Resolution QR Code with Logo Badge in Center -->
+        <div class="space-y-6">
+            <div class="relative w-52 h-52 mx-auto p-4 rounded-3xl bg-white shadow-2xl flex items-center justify-center border-4 border-yellow-gold glow-yellow-sm">
+                <!-- QR Code Pattern -->
+                <svg class="w-full h-full text-slate-900" viewBox="0 0 100 100" fill="currentColor">
+                    <rect x="5" y="5" width="25" height="25" rx="3" fill="#030712"/>
+                    <rect x="9" y="9" width="17" height="17" rx="2" fill="#ffffff"/>
+                    <rect x="13" y="13" width="9" height="9" fill="#030712"/>
+                    <rect x="70" y="5" width="25" height="25" rx="3" fill="#030712"/>
+                    <rect x="74" y="9" width="17" height="17" rx="2" fill="#ffffff"/>
+                    <rect x="78" y="13" width="9" height="9" fill="#030712"/>
+                    <rect x="5" y="70" width="25" height="25" rx="3" fill="#030712"/>
+                    <rect x="9" y="74" width="17" height="17" rx="2" fill="#ffffff"/>
+                    <rect x="13" y="78" width="9" height="9" fill="#030712"/>
+                    <rect x="35" y="10" width="6" height="6" fill="#030712"/>
+                    <rect x="45" y="15" width="8" height="6" fill="#030712"/>
+                    <rect x="58" y="8" width="6" height="8" fill="#030712"/>
+                    <rect x="35" y="24" width="10" height="6" fill="#030712"/>
+                    <rect x="50" y="26" width="12" height="6" fill="#030712"/>
+                    <rect x="72" y="35" width="10" height="8" fill="#030712"/>
+                    <rect x="85" y="42" width="8" height="8" fill="#030712"/>
+                    <rect x="74" y="50" width="18" height="6" fill="#030712"/>
+                    <rect x="35" y="70" width="8" height="6" fill="#030712"/>
+                    <rect x="48" y="72" width="10" height="8" fill="#030712"/>
+                    <rect x="62" y="70" width="6" height="10" fill="#030712"/>
+                    <rect x="74" y="75" width="16" height="6" fill="#030712"/>
+                    <rect x="40" y="84" width="22" height="6" fill="#030712"/>
+                    <rect x="68" y="86" width="14" height="6" fill="#030712"/>
+                </svg>
+
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div class="w-12 h-12 rounded-xl bg-yellow-gold p-1.5 shadow-lg border-2 border-white flex items-center justify-center">
+                        <img src="{{ asset('images/logo.svg') }}" alt="Mobilis Logo" class="w-full h-full object-contain">
+                    </div>
+                </div>
+            </div>
 
             <!-- Built-in 3 Modes Pill -->
             <div class="flex items-center justify-center gap-2 text-xs">
@@ -76,17 +184,10 @@
             </div>
 
             <div>
-                <h4 class="font-bold text-white text-base">Mobilis: All-In-One App (v2.5.0)</h4>
+                <h4 class="font-bold text-white text-base">Mobilis: All-In-One App</h4>
                 <p class="text-xs text-slate-400">
                     Includes Renter, Driver, and Partner Host modes in one download
                 </p>
-            </div>
-
-            <div>
-                <a href="{{ route('mobilis.download') }}" data-direct-download="all" class="w-full py-4 rounded-2xl bg-yellow-gold hover:bg-yellow-amber text-navy-950 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl glow-yellow transition-all">
-                    <span>Direct APK Download (32.8 MB)</span>
-                    <span>↓</span>
-                </a>
             </div>
         </div>
 

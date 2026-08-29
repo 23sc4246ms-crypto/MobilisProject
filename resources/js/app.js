@@ -630,15 +630,79 @@ function initMobileNav() {
 }
 
 // ==========================================
-// 10. UNIFIED APP DOWNLOAD HANDLER
+// 10. UNIFIED APP DOWNLOAD HANDLER (MOBILE-EXCLUSIVE DETECTION)
 // ==========================================
+function isMobileDevice() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera || '';
+    const isMobileUA = /android|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile/i.test(userAgent);
+    const isTouchScreen = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    const isSmallViewport = window.innerWidth <= 768;
+
+    return isMobileUA || (isTouchScreen && isSmallViewport);
+}
+
 function initDownloadHandlers() {
     const downloadBtns = document.querySelectorAll('[data-direct-download]');
     downloadBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', (e) => {
+            // Check if user is on Desktop / PC / Laptop
+            if (!isMobileDevice()) {
+                e.preventDefault();
+                openModal('desktop-mobile-exclusive-modal');
+                return;
+            }
+
+            // On Mobile Device: Proceed with direct APK download and progress toast
+            e.preventDefault();
             showDownloadProgressToast();
         });
     });
+
+    // Check if URL parameter requested desktop restricted modal
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('desktop_restricted') === '1') {
+        openModal('desktop-mobile-exclusive-modal');
+    }
+
+    // Copy Download Link Button Handler
+    const copyBtn = document.getElementById('copy-download-link-btn');
+    if (copyBtn) {
+        copyBtn.addEventListener('click', () => {
+            const downloadUrl = window.location.origin + '/download';
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(downloadUrl).then(() => {
+                    const textSpan = document.getElementById('copy-btn-text');
+                    if (textSpan) {
+                        const originalText = textSpan.textContent;
+                        textSpan.textContent = '✓ Mobile Download Link Copied!';
+                        setTimeout(() => {
+                            textSpan.textContent = originalText;
+                        }, 2500);
+                    }
+                }).catch(() => {
+                    fallbackCopyText(downloadUrl);
+                });
+            } else {
+                fallbackCopyText(downloadUrl);
+            }
+        });
+    }
+}
+
+function fallbackCopyText(text) {
+    const input = document.createElement('input');
+    input.value = text;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand('copy');
+    document.body.removeChild(input);
+    const textSpan = document.getElementById('copy-btn-text');
+    if (textSpan) {
+        textSpan.textContent = '✓ Mobile Download Link Copied!';
+        setTimeout(() => {
+            textSpan.textContent = 'Copy Mobile Download Link';
+        }, 2500);
+    }
 }
 
 function showDownloadProgressToast() {
@@ -680,7 +744,7 @@ function showDownloadProgressToast() {
             clearInterval(interval);
             if (bar) bar.style.width = '100%';
             
-            window.location.href = '/download';
+            window.location.href = '/download?direct=1';
 
             setTimeout(() => {
                 toast.innerHTML = `
@@ -704,6 +768,7 @@ function showDownloadProgressToast() {
         }
     }, 250);
 }
+
 
 // ==========================================
 // 11. CAR CARD INTERACTIVE IMAGE CAROUSELS

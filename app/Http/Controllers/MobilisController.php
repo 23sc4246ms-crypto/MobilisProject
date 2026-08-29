@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\AppReleaseService;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class MobilisController extends Controller
 {
+    public function __construct(
+        protected AppReleaseService $releaseService
+    ) {}
+
     /**
      * Show the Mobilis marketing landing page and app download hub.
      * 100% English, Hourly & Daily rates, Single unified Mobilis App.
@@ -184,14 +190,8 @@ class MobilisController extends Controller
             ],
         ];
 
-        $appInfo = [
-            'name' => 'Mobilis: All-In-One Car Rental App',
-            'version' => 'v2.5.0',
-            'size' => '32.8 MB',
-            'rating' => '4.9 ★ (18.5k reviews)',
-            'downloads' => '200,000+',
-            'description' => 'The single official Mobilis App for everyone. Rent by the hour or day, drive as an accredited chauffeur, or host your vehicle fleet all in one app!',
-        ];
+        // Fetch dynamic release info (real uploaded APK size, version, and download stats)
+        $appInfo = $this->releaseService->getReleaseInfo();
 
         return view('home', compact('fleet', 'appInfo'));
     }
@@ -222,18 +222,45 @@ class MobilisController extends Controller
 
     /**
      * Download handler for the unified Mobilis APK package.
+     * Enforces mobile-only download: Desktop users are redirected to scan QR code on mobile.
      */
-    public function download()
+    public function download(Request $request)
     {
-        $filename = 'Mobilis-App-v2.5.0.apk';
+        $userAgent = $request->header('User-Agent', '');
+        $isMobile = (bool) preg_match('/(android|iphone|ipad|ipod|mobile|windows phone|iemobile|opera mini|blackberry)/i', $userAgent);
+        $isDirect = $request->query('force') === '1' || $request->query('direct') === '1';
 
+        // If desktop user and not explicitly forced, redirect to homepage and trigger the mobile-only QR modal
+        if (! $isMobile && ! $isDirect) {
+            return redirect()->route('mobilis.home', ['desktop_restricted' => 1])
+                ->with('desktop_notice', 'Mobilis is exclusively for phone apps. Please scan the QR code with your mobile device to download.');
+        }
+
+        $info = $this->releaseService->getReleaseInfo();
+        $filePath = $this->releaseService->getDownloadFilePath();
+
+        // Increment verified mobile download counter
+        $this->releaseService->incrementDownloadCount();
+
+        // If real file exists on disk, stream real APK file
+        if ($filePath && file_exists($filePath)) {
+            return response()->download($filePath, $info['filename'], [
+                'Content-Type' => 'application/vnd.android.package-archive',
+                'Content-Disposition' => 'attachment; filename="'.$info['filename'].'"',
+                'Cache-Control' => 'no-cache, must-revalidate',
+            ]);
+        }
+
+        // Fallback placeholder package if no physical APK file has been uploaded yet
+        $filename = $info['filename'] ?? 'Mobilis-App-v2.5.0.apk';
         $dummyApkContent = "# MOBILIS OFFICIAL UNIFIED MOBILE APPLICATION PACKAGE\n"
             ."Application: Mobilis All-In-One App (Renter, Driver & Partner Modes)\n"
-            ."Version: 2.5.0\n"
+            .'Version: '.($info['version'] ?? 'v2.5.0')."\n"
             ."Package: com.mobilis.carrental\n"
-            .'Built: '.date('Y-m-d H:i:s')."\n"
+            .'Built: '.($info['updated_at'] ?? date('Y-m-d H:i:s'))."\n"
             ."Ecosystem: 100% Dedicated Car Rental Platform (Hourly & Daily Rates)\n"
-            ."Security: Verified by Mobilis Play Protect & CodeSign Certificate\n";
+            ."Security: Verified by Mobilis Play Protect & CodeSign Certificate\n"
+            ."Instructions: Please upload the production .apk binary in /admin/app-manager.\n";
 
         return response($dummyApkContent, 200, [
             'Content-Type' => 'application/vnd.android.package-archive',

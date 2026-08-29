@@ -103,7 +103,7 @@
                 <a href="{{ route('mobilis.home') }}" class="text-xs font-bold text-yellow-gold hover:underline flex items-center gap-2">
                     &larr; Back to Mobilis Home
                 </a>
-                <a href="{{ route('mobilis.download') }}" class="px-6 py-3 rounded-xl bg-yellow-gold text-navy-950 font-black text-xs uppercase tracking-wider shadow-lg glow-yellow-sm">
+                <a href="{{ route('mobilis.download') }}" data-direct-download="all" class="px-6 py-3 rounded-xl bg-yellow-gold text-navy-950 font-black text-xs uppercase tracking-wider shadow-lg glow-yellow-sm">
                     Download Mobilis App
                 </a>
             </div>

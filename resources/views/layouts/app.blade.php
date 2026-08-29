@@ -254,9 +254,15 @@
                             <a href="{{ route('mobilis.download') }}" data-direct-download="all" class="flex items-center justify-between p-3.5 rounded-2xl bg-navy-900 hover:bg-navy-850 text-slate-200 border border-yellow-gold/30 transition-all">
                                 <div>
                                     <span class="font-bold block text-white">Mobilis All-In-One App</span>
-                                    <span class="text-[11px] text-slate-400">v2.5.0 • Android APK</span>
+                                    <span class="text-[11px] text-slate-400">Official Mobile APK</span>
                                 </div>
-                                <span class="text-yellow-gold font-black">32.8 MB</span>
+                                <span class="text-yellow-gold font-black">Download ↓</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.app-manager') }}" class="inline-flex items-center gap-1.5 text-[11px] text-slate-400 hover:text-yellow-gold transition-colors">
+                                <span>⚙️</span>
+                                <span>App Release & Storage Manager &rarr;</span>
                             </a>
                         </li>
                     </ul>
