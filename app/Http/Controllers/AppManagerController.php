@@ -12,8 +12,15 @@ class AppManagerController extends Controller
     /**
      * Show the Admin Login Screen.
      */
-    public function showLogin(): View|RedirectResponse
+    public function showLogin(Request $request, AppReleaseService $releaseService): View|RedirectResponse
     {
+        $token = $request->query('passcode') ?? $request->query('token') ?? $request->query('auth');
+        if ($token && $releaseService->verifyAdminPassword($token)) {
+            session(['mobilis_admin_auth' => true]);
+
+            return redirect()->route('admin.app-manager');
+        }
+
         if (session('mobilis_admin_auth') === true) {
             return redirect()->route('admin.app-manager');
         }
@@ -58,8 +65,13 @@ class AppManagerController extends Controller
     /**
      * Display the App Manager Release Dashboard (Protected).
      */
-    public function index(AppReleaseService $releaseService): View|RedirectResponse
+    public function index(Request $request, AppReleaseService $releaseService): View|RedirectResponse
     {
+        $token = $request->query('passcode') ?? $request->query('token') ?? $request->query('auth');
+        if ($token && $releaseService->verifyAdminPassword($token)) {
+            session(['mobilis_admin_auth' => true]);
+        }
+
         if (session('mobilis_admin_auth') !== true) {
             return redirect()->route('admin.login');
         }

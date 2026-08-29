@@ -18,7 +18,11 @@ class AppReleaseService
         $this->uploadDir = public_path('uploads/apps');
 
         if (! File::isDirectory($this->uploadDir)) {
-            File::makeDirectory($this->uploadDir, 0755, true, true);
+            try {
+                File::makeDirectory($this->uploadDir, 0755, true, true);
+            } catch (\Throwable) {
+                // Silently handle read-only filesystems (e.g. Vercel serverless)
+            }
         }
     }
 
@@ -224,12 +228,16 @@ class AppReleaseService
      */
     protected function saveMetadata(array $data): void
     {
-        $dir = dirname($this->metaPath);
-        if (! File::isDirectory($dir)) {
-            File::makeDirectory($dir, 0755, true, true);
-        }
+        try {
+            $dir = dirname($this->metaPath);
+            if (! File::isDirectory($dir)) {
+                File::makeDirectory($dir, 0755, true, true);
+            }
 
-        File::put($this->metaPath, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+            File::put($this->metaPath, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        } catch (\Throwable) {
+            // Silently handle read-only storage on serverless hosts
+        }
     }
 
     /**

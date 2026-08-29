@@ -40,29 +40,47 @@
             </div>
         @endif
 
-        <form action="/admin/login" method="POST" class="space-y-4 text-left">
+        <form action="{{ route('admin.login') }}" method="POST" class="space-y-4 text-left">
             @csrf
 
             <div>
-                <label for="password" class="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
-                    Security Passcode
-                </label>
+                <div class="flex items-center justify-between mb-2">
+                    <label for="password" class="block text-xs font-black uppercase tracking-wider text-slate-300">
+                        Security Passcode
+                    </label>
+                    <button type="button" onclick="autoFillPasscode()" class="text-[11px] text-yellow-gold font-bold hover:underline flex items-center gap-1">
+                        <span>⚡ Auto-fill</span>
+                    </button>
+                </div>
+                
                 <div class="relative">
-                    <input type="password" name="password" id="password" required autofocus placeholder="Enter admin password..." class="w-full px-4 py-3.5 rounded-2xl bg-navy-950 border border-white/15 text-white text-sm font-bold focus:outline-none focus:border-yellow-gold pr-12">
+                    <input type="password" name="password" id="password" value="{{ old('password', 'mobilis2026') }}" required autofocus placeholder="Enter admin password..." class="w-full px-4 py-3.5 rounded-2xl bg-navy-950 border border-white/15 text-white text-sm font-bold focus:outline-none focus:border-yellow-gold pr-12">
                     <button type="button" onclick="togglePassVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-slate-400 hover:text-white text-xs">
                         👁️
                     </button>
                 </div>
-                <span class="text-[11px] text-slate-400 block mt-1.5">
-                    Default Passcode: <code class="text-yellow-gold font-mono bg-navy-950 px-1 py-0.5 rounded">mobilis2026</code>
-                </span>
+
+                <div class="flex items-center justify-between mt-2 text-xs">
+                    <span class="text-[11px] text-slate-400">
+                        Default Passcode: <code class="text-yellow-gold font-mono bg-navy-950 px-1.5 py-0.5 rounded border border-white/10">mobilis2026</code>
+                    </span>
+                    <button type="button" onclick="autoFillPasscode()" class="text-[11px] text-yellow-gold hover:text-yellow-amber font-bold">
+                        Click to Fill
+                    </button>
+                </div>
             </div>
 
-            <div class="pt-2">
-                <button type="submit" class="w-full py-4 rounded-2xl bg-yellow-gold hover:bg-yellow-amber text-navy-950 font-black text-sm uppercase tracking-wider shadow-2xl glow-yellow transition-all flex items-center justify-center gap-2">
+            <div class="pt-2 space-y-3">
+                <button type="submit" class="w-full py-4 rounded-2xl bg-yellow-gold hover:bg-yellow-amber text-navy-950 font-black text-sm uppercase tracking-wider shadow-2xl glow-yellow transition-all flex items-center justify-center gap-2 cursor-pointer">
                     <span>Unlock Admin Panel</span>
                     <span>&rarr;</span>
                 </button>
+
+                <div class="text-center pt-1">
+                    <a href="{{ route('admin.app-manager', ['passcode' => 'mobilis2026']) }}" class="inline-flex items-center gap-1.5 text-xs text-yellow-gold font-bold hover:text-white bg-yellow-gold/10 hover:bg-yellow-gold/20 px-3.5 py-1.5 rounded-xl border border-yellow-gold/25 transition-all">
+                        <span>⚡ 1-Click Direct Access Link</span>
+                    </a>
+                </div>
             </div>
         </form>
 
@@ -76,6 +94,12 @@
 </div>
 
 <script>
+    function autoFillPasscode() {
+        const passInput = document.getElementById('password');
+        passInput.value = 'mobilis2026';
+        passInput.focus();
+    }
+
     function togglePassVisibility() {
         const passInput = document.getElementById('password');
         if (passInput.type === 'password') {
