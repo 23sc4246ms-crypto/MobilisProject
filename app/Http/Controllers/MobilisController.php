@@ -197,6 +197,99 @@ class MobilisController extends Controller
     }
 
     /**
+     * Show the Mobilis Standalone Mobile Web App Experience.
+     */
+    public function app(): View
+    {
+        $fleet = [
+            [
+                'id' => 'sedan-1',
+                'name' => 'Toyota Vios 2025 (Uno)',
+                'plate' => 'IAG 1593',
+                'color' => 'Blue',
+                'category' => 'Sedan',
+                'badge' => 'Most Popular',
+                'seats' => '4-5 Seats',
+                'transmission' => 'Automatic',
+                'fuel' => 'Unleaded',
+                'hourly_rate' => 180,
+                'daily_rate' => 1800,
+                'image' => '/images/cars/toyota-vios-2025-uno-1.jpg',
+                'rating' => 4.95,
+                'trips' => 342,
+            ],
+            [
+                'id' => 'sedan-2',
+                'name' => 'Honda Civic RS Turbo',
+                'plate' => 'NBD 8821',
+                'color' => 'Ignite Red / White',
+                'category' => 'Sedan',
+                'badge' => 'Sporty & Fast',
+                'seats' => '5 Seats',
+                'transmission' => 'Automatic',
+                'fuel' => 'Gasoline',
+                'hourly_rate' => 280,
+                'daily_rate' => 2800,
+                'image' => 'https://images.unsplash.com/photo-1590362891991-f776e747a588?auto=format&fit=crop&w=1000&q=80',
+                'rating' => 4.95,
+                'trips' => 210,
+            ],
+            [
+                'id' => 'suv-1',
+                'name' => 'Toyota Fortuner 4x2 GR-S',
+                'plate' => 'NCB 4109',
+                'color' => 'Attitude Black',
+                'category' => 'SUV',
+                'badge' => 'Best for Long Trips',
+                'seats' => '7 Seats',
+                'transmission' => 'Automatic',
+                'fuel' => 'Diesel',
+                'hourly_rate' => 380,
+                'daily_rate' => 3800,
+                'image' => 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1000&q=80',
+                'rating' => 4.92,
+                'trips' => 488,
+            ],
+            [
+                'id' => 'van-1',
+                'name' => 'Toyota HiAce Super Grandia',
+                'plate' => 'NFG 9032',
+                'color' => 'Luxury Pearl White',
+                'category' => 'Van',
+                'badge' => 'VIP Group Travel',
+                'seats' => '10 Seats',
+                'transmission' => 'Automatic',
+                'fuel' => 'Diesel',
+                'hourly_rate' => 480,
+                'daily_rate' => 4800,
+                'image' => 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=1000&q=80',
+                'rating' => 4.98,
+                'trips' => 620,
+            ],
+            [
+                'id' => 'luxury-1',
+                'name' => 'Mercedes-Benz C-Class AMG',
+                'plate' => 'NJB 1001',
+                'color' => 'Obsidian Black',
+                'category' => 'Luxury',
+                'badge' => 'Executive Prestige',
+                'seats' => '5 Seats',
+                'transmission' => 'Automatic',
+                'fuel' => 'Premium Unleaded',
+                'hourly_rate' => 750,
+                'daily_rate' => 7500,
+                'image' => 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=1000&q=80',
+                'rating' => 5.0,
+                'trips' => 88,
+            ],
+        ];
+
+        $appInfo = $this->releaseService->getReleaseInfo();
+
+        return view('app', compact('fleet', 'appInfo'));
+    }
+
+    /**
      * Show Terms of Service page.
      */
     public function terms(): View

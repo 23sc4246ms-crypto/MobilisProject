@@ -10,8 +10,15 @@
     <meta name="description" content="Download the official Mobilis App for 100% car rental in the Philippines. Hourly and Daily rates for Renters, Drivers, and Vehicle Hosts.">
     <meta name="keywords" content="Mobilis, car rental app, car rental Philippines, hourly car rental, rent car Manila, apply car rental driver, car partner host, APK download car rental">
 
-    <!-- Official Brand Favicon -->
+    <!-- Official Brand Favicon & PWA Icons -->
     <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.svg') }}">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#FFC80A">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Mobilis">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

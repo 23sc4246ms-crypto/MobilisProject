@@ -641,6 +641,37 @@ function isMobileDevice() {
     return isMobileUA || (isTouchScreen && isSmallViewport);
 }
 
+// Register PWA Service Worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch((err) => {
+            console.log('SW registration notice:', err);
+        });
+    });
+}
+
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    const banner = document.getElementById('pwa-install-banner');
+    if (banner) banner.classList.remove('hidden');
+});
+
+window.triggerPwaPromptFromModal = function() {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choice) => {
+            if (choice.outcome === 'accepted') {
+                closeModal('mobile-install-app-modal');
+            }
+            deferredPrompt = null;
+        });
+    } else {
+        alert('📱 To install on your phone:\n\n1. Tap the three dots (⋮) in Chrome or Share (📤) in Safari.\n2. Tap "Add to Home screen" or "Install App".');
+    }
+};
+
 function initDownloadHandlers() {
     const downloadBtns = document.querySelectorAll('[data-direct-download]');
     downloadBtns.forEach(btn => {
@@ -652,9 +683,19 @@ function initDownloadHandlers() {
                 return;
             }
 
-            // On Mobile Device: Proceed with direct APK download and progress toast
+            // On Mobile Device: Open instant mobile install assistant
             e.preventDefault();
-            showDownloadProgressToast();
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choice) => {
+                    if (choice.outcome === 'accepted') {
+                        console.log('User accepted app install');
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                openModal('mobile-install-app-modal');
+            }
         });
     });
 

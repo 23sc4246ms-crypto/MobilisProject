@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 // Mobilis Marketing Landing Page & App Download Hub
 Route::get('/', [MobilisController::class, 'index'])->name('mobilis.home');
+Route::get('/app', [MobilisController::class, 'app'])->name('mobilis.app');
 
 // Legal & Information Pages
 Route::get('/terms', [MobilisController::class, 'terms'])->name('mobilis.terms');

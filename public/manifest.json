@@ -1,0 +1,55 @@
+{
+    "name": "Mobilis: All-In-One Car Rental App",
+    "short_name": "Mobilis",
+    "description": "The official 100% dedicated Car Rental mobile app hub in the Philippines. Hourly and Daily rates for Renters, Drivers, and Vehicle Hosts.",
+    "start_url": "/?source=pwa",
+    "scope": "/",
+    "display": "standalone",
+    "background_color": "#030712",
+    "theme_color": "#FFC80A",
+    "orientation": "portrait-primary",
+    "categories": ["travel", "navigation", "business", "lifestyle"],
+    "icons": [
+        {
+            "src": "/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/images/logo.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Rent a Car (Hourly/Daily)",
+            "short_name": "Rent Car",
+            "description": "Browse and rent sedans, SUVs, and vans",
+            "url": "/#fleet",
+            "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+        },
+        {
+            "name": "Chauffeur Driver Mode",
+            "short_name": "Drive & Earn",
+            "description": "Drive accredited vehicles and earn daily",
+            "url": "/#apps",
+            "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+        },
+        {
+            "name": "Host Partner Fleet",
+            "short_name": "Host Car",
+            "description": "List your vehicle and earn passive income",
+            "url": "/#calculator",
+            "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+        }
+    ]
+}

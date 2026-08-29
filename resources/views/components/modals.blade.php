@@ -469,3 +469,67 @@
     </div>
 </div>
 
+<!-- ======================================================== -->
+<!-- 7. MOBILE APP INSTALLATION & PWA ASSISTANT MODAL -->
+<!-- ======================================================== -->
+<div id="mobile-install-app-modal" class="mobilis-modal hidden fixed inset-0 z-50 overflow-y-auto bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
+    <div class="relative w-full max-w-md glass-card bg-navy-900 border border-yellow-gold/50 rounded-3xl p-6 sm:p-8 shadow-2xl animate-fadeIn text-center space-y-5 glow-yellow-sm">
+        
+        <button type="button" data-close-modal class="absolute top-5 right-5 p-2.5 rounded-2xl text-slate-400 hover:text-white bg-slate-800/80 hover:bg-slate-800 transition-colors" aria-label="Close modal">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+
+        <div class="w-20 h-20 rounded-3xl bg-yellow-gold p-3 shadow-2xl mx-auto glow-yellow flex items-center justify-center">
+            <img src="{{ asset('images/logo.svg') }}" alt="Mobilis Logo" class="w-full h-full object-contain">
+        </div>
+
+        <div>
+            <span class="px-3 py-1 rounded-full bg-yellow-gold/15 text-yellow-gold text-[11px] font-black border border-yellow-gold/30 uppercase tracking-wider">
+                📱 OFFICIAL MOBILIS MOBILE APP
+            </span>
+            <h3 class="text-2xl font-black text-white font-display mt-2">
+                Install Mobilis on Phone
+            </h3>
+            <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+                Add Mobilis directly to your smartphone's home screen. Works on any Android & iPhone with instant loading and offline support!
+            </p>
+        </div>
+
+        <!-- Installation Methods -->
+        <div class="space-y-3 text-left text-xs">
+            <!-- 1-Click Native Install Button -->
+            <button type="button" id="modal-pwa-install-btn" onclick="triggerPwaPromptFromModal()" class="w-full py-4 rounded-2xl bg-yellow-gold hover:bg-yellow-amber text-navy-950 font-black text-sm uppercase tracking-wider shadow-2xl glow-yellow transition-all flex items-center justify-center gap-2">
+                <span>⚡ 1-Tap Add to Home Screen</span>
+            </button>
+
+            <!-- Launch Web App View -->
+            <a href="{{ route('mobilis.app') }}" class="w-full py-3.5 rounded-2xl bg-navy-950 hover:bg-navy-850 text-white font-bold text-xs flex items-center justify-center gap-2 border border-white/15 transition-all text-center">
+                <span>🚀 Launch Mobile App View in Browser &rarr;</span>
+            </a>
+
+            <!-- Step by Step Guide -->
+            <div class="p-4 rounded-2xl bg-navy-950/90 border border-white/10 space-y-2.5">
+                <span class="text-yellow-gold font-bold block text-[11px] uppercase tracking-wider">Manual Installation Guide:</span>
+                
+                <div class="flex items-start gap-2.5">
+                    <span class="w-5 h-5 rounded-full bg-yellow-gold/20 text-yellow-gold flex items-center justify-center font-bold text-xs flex-shrink-0">1</span>
+                    <p class="text-slate-300 text-[11px]">
+                        <strong>Android (Chrome):</strong> Tap the <strong>three dots (⋮)</strong> at the top right &rarr; Select <strong>"Add to Home screen"</strong> or <strong>"Install app"</strong>.
+                    </p>
+                </div>
+
+                <div class="flex items-start gap-2.5">
+                    <span class="w-5 h-5 rounded-full bg-yellow-gold/20 text-yellow-gold flex items-center justify-center font-bold text-xs flex-shrink-0">2</span>
+                    <p class="text-slate-300 text-[11px]">
+                        <strong>iPhone (Safari):</strong> Tap the <strong>Share button (📤)</strong> &rarr; Select <strong>"Add to Home Screen ➕"</strong>.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
