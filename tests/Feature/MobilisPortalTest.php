@@ -43,13 +43,29 @@ class MobilisPortalTest extends TestCase
     }
 
     /**
-     * Test direct APK download route for the unified Mobilis app.
+     * Test direct APK download route for the unified Mobilis app on mobile devices.
      */
-    public function test_download_endpoint_returns_unified_apk_payload(): void
+    public function test_download_endpoint_returns_unified_apk_payload_on_mobile(): void
     {
-        $download = $this->get('/download');
+        $download = $this->withHeaders([
+            'User-Agent' => 'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36',
+        ])->get('/download');
+
         $download->assertStatus(200);
-        $download->assertHeader('Content-Disposition', 'attachment; filename="Mobilis-App-v2.5.0.apk"');
+        $download->assertHeader('Content-Disposition', 'attachment; filename=Mobilis-App-v2.5.0.apk');
         $download->assertHeader('Content-Type', 'application/vnd.android.package-archive');
+    }
+
+    /**
+     * Test that desktop users are redirected to homepage with QR prompt.
+     */
+    public function test_desktop_users_are_redirected_to_homepage_on_download(): void
+    {
+        $response = $this->withHeaders([
+            'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        ])->get('/download');
+
+        $response->assertStatus(302);
+        $response->assertRedirect('/?desktop_restricted=1');
     }
 }
