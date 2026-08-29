@@ -267,10 +267,13 @@
             <!-- Bottom Legal & Copyright -->
             <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
                 <p>&copy; {{ date('Y') }} Mobilis Philippines Inc. All Rights Reserved. 100% Dedicated Car Rental App Hub.</p>
-                <div class="flex items-center gap-6 text-slate-400">
+                <div class="flex flex-wrap items-center gap-6 text-slate-400">
                     <a href="{{ route('mobilis.privacy') }}" data-open-modal="privacy-modal" class="hover:text-yellow-gold transition-colors">Privacy Policy</a>
                     <a href="{{ route('mobilis.terms') }}" data-open-modal="terms-modal" class="hover:text-yellow-gold transition-colors">Terms of Service</a>
                     <a href="{{ route('mobilis.insurance') }}" data-open-modal="insurance-modal" class="hover:text-yellow-gold transition-colors">Security & Insurance</a>
+                    <a href="{{ route('admin.login') }}" class="text-slate-400 hover:text-yellow-gold transition-colors flex items-center gap-1 font-bold">
+                        <span>🔒</span> Admin Portal
+                    </a>
                 </div>
             </div>
         </div>
