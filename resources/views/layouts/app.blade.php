@@ -259,12 +259,6 @@
                                 <span class="text-yellow-gold font-black">Download ↓</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="{{ route('admin.app-manager') }}" class="inline-flex items-center gap-1.5 text-[11px] text-slate-400 hover:text-yellow-gold transition-colors">
-                                <span>⚙️</span>
-                                <span>App Release & Storage Manager &rarr;</span>
-                            </a>
-                        </li>
                     </ul>
                 </div>
 

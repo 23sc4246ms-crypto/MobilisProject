@@ -16,6 +16,12 @@ if (! getenv('APP_ENV')) {
     $_ENV['APP_ENV'] = 'production';
 }
 
+// Force HTTPS port & scheme detection on Vercel
+if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+    $_SERVER['HTTPS'] = 'on';
+    $_SERVER['SERVER_PORT'] = 443;
+}
+
 if (! getenv('APP_DEBUG')) {
     putenv('APP_DEBUG=false');
     $_ENV['APP_DEBUG'] = 'false';

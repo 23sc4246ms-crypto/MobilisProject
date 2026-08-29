@@ -16,7 +16,13 @@ Route::get('/security-insurance', [MobilisController::class, 'insurance'])->name
 Route::get('/download', [MobilisController::class, 'download'])->name('mobilis.download');
 Route::get('/download/{type}', [MobilisController::class, 'download']);
 
-// App Release & Storage Management (Upload APKs & Manage Packages)
+// Admin Authentication & App Release Manager
+Route::get('/admin/login', [AppManagerController::class, 'showLogin'])->name('admin.login');
+Route::post('/admin/login', [AppManagerController::class, 'login']);
+Route::post('/admin/logout', [AppManagerController::class, 'logout'])->name('admin.logout');
+
 Route::get('/admin/app-manager', [AppManagerController::class, 'index'])->name('admin.app-manager');
+Route::post('/admin/app-manager/settings', [AppManagerController::class, 'updateSettings'])->name('admin.app-manager.settings');
 Route::post('/admin/app-manager/upload', [AppManagerController::class, 'upload'])->name('admin.app-manager.upload');
+Route::post('/admin/app-manager/change-password', [AppManagerController::class, 'changePassword'])->name('admin.app-manager.change-password');
 Route::get('/admin/app-manager/test-download', [AppManagerController::class, 'testDownload'])->name('admin.app-manager.test-download');

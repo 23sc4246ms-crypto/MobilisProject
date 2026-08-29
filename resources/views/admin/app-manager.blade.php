@@ -6,7 +6,7 @@
 <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-radial-hero bg-grid-pattern">
     <div class="max-w-5xl mx-auto space-y-8">
         
-        <!-- Header & Breadcrumb -->
+        <!-- Header & Breadcrumb & Logout -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-white/10 pb-6">
             <div>
                 <a href="{{ route('mobilis.home') }}" class="inline-flex items-center gap-2 text-xs font-bold text-yellow-gold hover:text-yellow-amber transition-colors mb-2">
@@ -16,7 +16,7 @@
                     <span>📱</span> App Release & Storage Manager
                 </h1>
                 <p class="text-slate-400 text-xs sm:text-sm mt-1">
-                    Upload, store, and manage official Mobilis APK installation packages for mobile devices.
+                    Secure Admin Portal: Manage download URLs, upload APK builds, and update version notes.
                 </p>
             </div>
 
@@ -25,8 +25,15 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                     </svg>
-                    <span>Test Direct Download</span>
+                    <span>Test Download</span>
                 </a>
+
+                <form action="/admin/logout" method="POST" class="inline">
+                    @csrf
+                    <button type="submit" class="px-4 py-2.5 rounded-xl bg-rose-500/20 hover:bg-rose-500 text-rose-300 hover:text-white border border-rose-500/30 text-xs font-bold transition-all">
+                        Logout
+                    </button>
+                </form>
             </div>
         </div>
 
@@ -70,9 +77,19 @@
 
                 <div class="flex items-start justify-between gap-4 mb-4">
                     <div>
-                        <span class="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider {{ $releaseInfo['file_exists'] ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' }}">
-                            {{ $releaseInfo['file_exists'] ? '● LIVE APK ACTIVE ON DISK' : '○ METADATA READY (UPLOAD FILE BELOW)' }}
-                        </span>
+                        @if($releaseInfo['has_cloud_url'])
+                            <span class="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-blue-500/20 text-blue-400 border border-blue-500/30">
+                                ☁️ CLOUD DOWNLOAD LINK ACTIVE (VERCEL-COMPATIBLE)
+                            </span>
+                        @elseif($releaseInfo['file_exists'])
+                            <span class="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                                ● LOCAL APK ACTIVE ON DISK
+                            </span>
+                        @else
+                            <span class="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">
+                                ○ METADATA READY (SET CLOUD LINK OR UPLOAD BELOW)
+                            </span>
+                        @endif
                         <h2 class="text-2xl font-black text-white font-display mt-2">
                             {{ $releaseInfo['name'] }}
                         </h2>
@@ -84,9 +101,9 @@
 
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 py-4 border-y border-white/10 my-4 text-xs">
                     <div>
-                        <span class="text-slate-400 block text-[11px]">Filename:</span>
-                        <span class="text-white font-mono font-bold truncate block mt-0.5" title="{{ $releaseInfo['filename'] }}">
-                            {{ $releaseInfo['filename'] }}
+                        <span class="text-slate-400 block text-[11px]">Download Source:</span>
+                        <span class="text-white font-bold block mt-0.5 truncate" title="{{ $releaseInfo['download_url'] ?: $releaseInfo['filename'] }}">
+                            {{ $releaseInfo['download_url'] ? 'External Cloud URL' : $releaseInfo['filename'] }}
                         </span>
                     </div>
                     <div>
@@ -117,7 +134,6 @@
                     Mobile Direct Link
                 </span>
                 
-                <!-- QR Code Box -->
                 <div class="w-36 h-36 p-2 rounded-2xl bg-white shadow-xl border-2 border-yellow-gold/50 flex items-center justify-center mb-3">
                     <svg class="w-full h-full text-slate-900" viewBox="0 0 100 100" fill="currentColor">
                         <rect x="5" y="5" width="25" height="25" rx="3" fill="#030712"/>
@@ -146,26 +162,97 @@
                     </svg>
                 </div>
 
-                <p class="text-[11px] text-slate-300 mb-2">Scan with phone to test mobile-only download handler.</p>
+                <p class="text-[11px] text-slate-300 mb-2">Scan with phone to test mobile download handler.</p>
                 <code class="text-[10px] text-yellow-gold bg-navy-950 px-2.5 py-1 rounded-lg border border-white/10 font-mono">
                     {{ url('/download') }}
                 </code>
             </div>
         </div>
 
-        <!-- Upload Form Section -->
-        <div class="glass-card bg-navy-900/90 border border-white/15 rounded-3xl p-7 sm:p-9 shadow-2xl">
+        <!-- ======================================================== -->
+        <!-- SECTION 1: CLOUD DIRECT DOWNLOAD LINK SETTINGS (VERCEL COMPATIBLE) -->
+        <!-- ======================================================== -->
+        <div class="glass-card bg-navy-900/90 border border-yellow-gold/30 rounded-3xl p-7 sm:p-9 shadow-2xl">
             <div class="flex items-center gap-3 mb-6">
-                <div class="w-10 h-10 rounded-xl bg-yellow-gold/20 text-yellow-gold flex items-center justify-center font-bold text-lg border border-yellow-gold/30">
-                    ↑
+                <div class="w-10 h-10 rounded-xl bg-yellow-gold text-navy-950 flex items-center justify-center font-bold text-lg">
+                    ☁️
                 </div>
                 <div>
-                    <h3 class="text-xl font-black text-white font-display">Upload New APK Release File</h3>
-                    <p class="text-xs text-slate-400">Upload your compiled Android .apk package directly from your browser.</p>
+                    <div class="flex items-center gap-2">
+                        <h3 class="text-xl font-black text-white font-display">Cloud Download Link & Version Settings</h3>
+                        <span class="px-2.5 py-0.5 rounded-full bg-yellow-gold/20 text-yellow-gold font-bold text-[10px] uppercase">Recommended for Vercel</span>
+                    </div>
+                    <p class="text-xs text-slate-400">Set your direct APK link from GitHub Releases, Google Drive, MediaFire, Dropbox, or CDN.</p>
                 </div>
             </div>
 
-            <form action="{{ route('admin.app-manager.upload') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+            <form action="/admin/app-manager/settings" method="POST" class="space-y-5">
+                @csrf
+
+                <!-- Download URL Input -->
+                <div>
+                    <label for="download_url" class="block text-xs font-black uppercase tracking-wider text-yellow-gold mb-2">
+                        Direct Cloud APK URL (e.g. GitHub Releases / Google Drive / CDN)
+                    </label>
+                    <input type="url" name="download_url" id="download_url" value="{{ old('download_url', $releaseInfo['download_url'] ?? '') }}" placeholder="https://github.com/your-username/your-repo/releases/download/v2.5.0/Mobilis-App.apk" class="w-full px-4 py-3.5 rounded-2xl bg-navy-950 border border-white/15 text-white text-xs sm:text-sm font-mono focus:outline-none focus:border-yellow-gold">
+                    <span class="text-[11px] text-slate-400 block mt-1.5">
+                        💡 <strong>Tip for Vercel:</strong> Dahil may 4.5MB limit ang Vercel upload, pwede ninyong i-upload ang inyong `.apk` sa <strong>GitHub Releases</strong> o <strong>Google Drive</strong> at i-paste dito ang download link. Automatic itong ida-download ng mga users kapag nag-scan sila!
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                    <div>
+                        <label for="settings_version" class="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
+                            Version Number <span class="text-rose-400">*</span>
+                        </label>
+                        <input type="text" name="version" id="settings_version" value="{{ old('version', $releaseInfo['version']) }}" required placeholder="e.g. v2.5.0" class="w-full px-4 py-3.5 rounded-2xl bg-navy-950 border border-white/15 text-white text-sm font-bold focus:outline-none focus:border-yellow-gold">
+                    </div>
+
+                    <div>
+                        <label for="settings_size" class="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
+                            Display File Size
+                        </label>
+                        <input type="text" name="size" id="settings_size" value="{{ old('size', $releaseInfo['size']) }}" placeholder="e.g. 32.8 MB" class="w-full px-4 py-3.5 rounded-2xl bg-navy-950 border border-white/15 text-white text-sm font-bold focus:outline-none focus:border-yellow-gold">
+                    </div>
+
+                    <div>
+                        <label for="settings_min_android" class="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
+                            Min Android Requirement
+                        </label>
+                        <input type="text" name="min_android" id="settings_min_android" value="{{ old('min_android', $releaseInfo['min_android']) }}" placeholder="e.g. Android 8.0 or higher" class="w-full px-4 py-3.5 rounded-2xl bg-navy-950 border border-white/15 text-white text-sm font-bold focus:outline-none focus:border-yellow-gold">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="settings_release_notes" class="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
+                        Release Notes
+                    </label>
+                    <textarea name="release_notes" id="settings_release_notes" rows="2" placeholder="Describe the updates in this release..." class="w-full px-4 py-3 rounded-2xl bg-navy-950 border border-white/15 text-white text-xs sm:text-sm font-sans focus:outline-none focus:border-yellow-gold">{{ old('release_notes', $releaseInfo['release_notes']) }}</textarea>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" class="w-full py-4 rounded-2xl bg-yellow-gold hover:bg-yellow-amber text-navy-950 font-black text-sm uppercase tracking-wider shadow-2xl glow-yellow transition-all flex items-center justify-center gap-2">
+                        <span>Save & Publish Cloud Release Settings</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- SECTION 2: DIRECT APK FILE UPLOADER (LOCAL / VPS SERVERS) -->
+        <!-- ======================================================== -->
+        <div class="glass-card bg-navy-900/90 border border-white/15 rounded-3xl p-7 sm:p-9 shadow-2xl">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 rounded-xl bg-yellow-gold/20 text-yellow-gold flex items-center justify-center font-bold text-lg border border-yellow-gold/30">
+                    📦
+                </div>
+                <div>
+                    <h3 class="text-xl font-black text-white font-display">Direct APK File Upload (Local & VPS Server)</h3>
+                    <p class="text-xs text-slate-400">Upload your compiled Android .apk package directly if hosting on Local Laragon or dedicated VPS.</p>
+                </div>
+            </div>
+
+            <form action="/admin/app-manager/upload" method="POST" enctype="multipart/form-data" class="space-y-6">
                 @csrf
 
                 <!-- File Input Drag-and-Drop Area -->
@@ -178,74 +265,100 @@
                         
                         <div class="space-y-3">
                             <div class="w-16 h-16 rounded-2xl bg-navy-900 text-yellow-gold mx-auto flex items-center justify-center text-3xl border border-white/10 group-hover:scale-110 transition-transform">
-                                📦
+                                📱
                             </div>
                             <div>
                                 <span id="file-label-text" class="text-sm font-bold text-white block group-hover:text-yellow-gold transition-colors">
                                     Click to choose APK file or drag and drop here
                                 </span>
                                 <span id="file-size-text" class="text-xs text-slate-400 block mt-1">
-                                    Supported: .apk (Android Application Package) up to 500MB
+                                    Supported: .apk (Android Application Package) up to 500MB on local server
                                 </span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Version & Minimum OS Row -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
-                        <label for="version" class="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
+                        <label for="upload_version" class="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
                             App Version Number <span class="text-rose-400">*</span>
                         </label>
-                        <input type="text" name="version" id="version" value="{{ old('version', $releaseInfo['version']) }}" required placeholder="e.g. v2.5.0" class="w-full px-4 py-3.5 rounded-2xl bg-navy-950 border border-white/15 text-white text-sm font-bold focus:outline-none focus:border-yellow-gold">
+                        <input type="text" name="version" id="upload_version" value="{{ old('version', $releaseInfo['version']) }}" required placeholder="e.g. v2.5.0" class="w-full px-4 py-3.5 rounded-2xl bg-navy-950 border border-white/15 text-white text-sm font-bold focus:outline-none focus:border-yellow-gold">
                     </div>
 
                     <div>
-                        <label for="min_android" class="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
+                        <label for="upload_min_android" class="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
                             Minimum Android Requirement
                         </label>
-                        <input type="text" name="min_android" id="min_android" value="{{ old('min_android', $releaseInfo['min_android']) }}" placeholder="e.g. Android 8.0 (Oreo) or higher" class="w-full px-4 py-3.5 rounded-2xl bg-navy-950 border border-white/15 text-white text-sm font-bold focus:outline-none focus:border-yellow-gold">
+                        <input type="text" name="min_android" id="upload_min_android" value="{{ old('min_android', $releaseInfo['min_android']) }}" placeholder="e.g. Android 8.0 (Oreo) or higher" class="w-full px-4 py-3.5 rounded-2xl bg-navy-950 border border-white/15 text-white text-sm font-bold focus:outline-none focus:border-yellow-gold">
                     </div>
                 </div>
 
-                <!-- Release Notes -->
                 <div>
-                    <label for="release_notes" class="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
+                    <label for="upload_release_notes" class="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
                         Release Notes / Changelog
                     </label>
-                    <textarea name="release_notes" id="release_notes" rows="3" placeholder="Describe the changes or updates in this APK release..." class="w-full px-4 py-3 rounded-2xl bg-navy-950 border border-white/15 text-white text-xs sm:text-sm font-sans focus:outline-none focus:border-yellow-gold">{{ old('release_notes', $releaseInfo['release_notes']) }}</textarea>
+                    <textarea name="release_notes" id="upload_release_notes" rows="2" placeholder="Describe the changes in this APK build..." class="w-full px-4 py-3 rounded-2xl bg-navy-950 border border-white/15 text-white text-xs sm:text-sm font-sans focus:outline-none focus:border-yellow-gold">{{ old('release_notes', $releaseInfo['release_notes']) }}</textarea>
                 </div>
 
-                <!-- Submit Button -->
                 <div class="pt-2">
-                    <button type="submit" id="upload-submit-btn" class="w-full py-4 rounded-2xl bg-yellow-gold hover:bg-yellow-amber text-navy-950 font-black text-sm uppercase tracking-wider shadow-2xl glow-yellow transition-all flex items-center justify-center gap-2">
+                    <button type="submit" class="w-full py-4 rounded-2xl bg-navy-800 hover:bg-navy-750 text-yellow-gold hover:text-white border border-yellow-gold/40 font-black text-sm uppercase tracking-wider shadow-xl transition-all flex items-center justify-center gap-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                         </svg>
-                        <span>Publish & Save APK Release</span>
+                        <span>Upload & Save Physical APK File</span>
                     </button>
                 </div>
             </form>
         </div>
 
-        <!-- Direct Folder Path Guide for Manual Placement -->
-        <div class="glass-card bg-navy-900/70 border border-white/10 rounded-3xl p-6 sm:p-7 text-xs text-slate-300 space-y-3">
-            <h4 class="font-bold text-white text-sm flex items-center gap-2 text-yellow-gold">
-                <span>📁</span> Manual Folder Copy Option (Direct File Placement)
-            </h4>
-            <p class="leading-relaxed">
-                Kung ayaw ninyong mag-upload via browser, pwede niyo rin pong direktang i-paste o i-kopya ang inyong <code class="text-yellow-gold font-mono bg-navy-950 px-1.5 py-0.5 rounded">Mobilis-App-v2.5.0.apk</code> sa folder na ito sa inyong computer:
-            </p>
-            <div class="p-3.5 rounded-2xl bg-navy-950 border border-white/10 flex items-center justify-between gap-3">
-                <code class="font-mono text-yellow-gold text-xs truncate select-all">{{ $uploadFolder }}</code>
-                <button type="button" onclick="navigator.clipboard.writeText('{{ addslashes($uploadFolder) }}'); alert('Folder path copied to clipboard!');" class="px-3 py-1.5 rounded-xl bg-navy-900 hover:bg-navy-800 text-white font-bold text-[11px] border border-white/15 transition-all flex-shrink-0">
-                    Copy Path
-                </button>
+        <!-- ======================================================== -->
+        <!-- SECTION 3: CHANGE ADMIN PASSWORD -->
+        <!-- ======================================================== -->
+        <div class="glass-card bg-navy-900/90 border border-white/15 rounded-3xl p-7 sm:p-9 shadow-2xl">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 rounded-xl bg-yellow-gold/20 text-yellow-gold flex items-center justify-center font-bold text-lg border border-yellow-gold/30">
+                    🔒
+                </div>
+                <div>
+                    <h3 class="text-xl font-black text-white font-display">Change Admin Security Password</h3>
+                    <p class="text-xs text-slate-400">Update your secret passcode to keep the admin manager secure.</p>
+                </div>
             </div>
-            <p class="text-[11px] text-slate-400">
-                Lahat ng files na ilalagay dito ay automatic na ise-serve sa direct download kapag binisita ng mga mobile users.
-            </p>
+
+            <form action="/admin/app-manager/change-password" method="POST" class="space-y-4">
+                @csrf
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                    <div>
+                        <label for="current_password" class="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
+                            Current Password <span class="text-rose-400">*</span>
+                        </label>
+                        <input type="password" name="current_password" id="current_password" required placeholder="Enter current passcode..." class="w-full px-4 py-3 rounded-2xl bg-navy-950 border border-white/15 text-white text-xs sm:text-sm font-bold focus:outline-none focus:border-yellow-gold">
+                    </div>
+
+                    <div>
+                        <label for="new_password" class="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
+                            New Password <span class="text-rose-400">*</span>
+                        </label>
+                        <input type="password" name="new_password" id="new_password" required minlength="6" placeholder="Min. 6 characters..." class="w-full px-4 py-3 rounded-2xl bg-navy-950 border border-white/15 text-white text-xs sm:text-sm font-bold focus:outline-none focus:border-yellow-gold">
+                    </div>
+
+                    <div>
+                        <label for="new_password_confirmation" class="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
+                            Confirm New Password <span class="text-rose-400">*</span>
+                        </label>
+                        <input type="password" name="new_password_confirmation" id="new_password_confirmation" required minlength="6" placeholder="Repeat new passcode..." class="w-full px-4 py-3 rounded-2xl bg-navy-950 border border-white/15 text-white text-xs sm:text-sm font-bold focus:outline-none focus:border-yellow-gold">
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" class="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs uppercase tracking-wider border border-white/10 transition-all">
+                        Update Security Password
+                    </button>
+                </div>
+            </form>
         </div>
 
     </div>

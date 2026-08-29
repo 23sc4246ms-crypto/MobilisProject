@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 
 class AppReleaseService
 {
@@ -31,6 +32,7 @@ class AppReleaseService
             'version' => 'v2.5.0',
             'filename' => 'Mobilis-App-v2.5.0.apk',
             'file_path' => 'uploads/apps/Mobilis-App-v2.5.0.apk',
+            'download_url' => '',
             'size' => '32.8 MB',
             'size_bytes' => 34393292,
             'rating' => '4.9 ★ (18.5k reviews)',
@@ -50,12 +52,21 @@ class AppReleaseService
             }
         }
 
-        // Check if real file exists on disk and calculate accurate file size
+        // If direct cloud URL is provided, consider it active
+        if (! empty($default['download_url'])) {
+            $default['has_cloud_url'] = true;
+        } else {
+            $default['has_cloud_url'] = false;
+        }
+
+        // Check if real local file exists on disk and calculate accurate file size
         $realPath = $this->getDownloadFilePath($default['filename'] ?? null);
         if ($realPath && File::exists($realPath)) {
             $bytes = File::size($realPath);
             $default['size_bytes'] = $bytes;
-            $default['size'] = $this->formatBytes($bytes);
+            if (empty($default['download_url'])) {
+                $default['size'] = $this->formatBytes($bytes);
+            }
             $default['file_exists'] = true;
             $default['absolute_path'] = $realPath;
         } else {
@@ -63,6 +74,64 @@ class AppReleaseService
         }
 
         return $default;
+    }
+
+    /**
+     * Check if admin password is valid.
+     */
+    public function verifyAdminPassword(string $password): bool
+    {
+        $info = $this->getReleaseInfo();
+        $storedHash = $info['admin_password_hash'] ?? null;
+
+        if ($storedHash) {
+            return Hash::check($password, $storedHash);
+        }
+
+        // Default initial password
+        return $password === 'mobilis2026' || $password === 'admin2026';
+    }
+
+    /**
+     * Update admin password.
+     */
+    public function setAdminPassword(string $newPassword): void
+    {
+        $info = $this->getReleaseInfo();
+        $info['admin_password_hash'] = Hash::make($newPassword);
+        $this->saveMetadata($info);
+    }
+
+    /**
+     * Update release settings (Version, Direct Cloud Download URL, Release Notes, etc.)
+     */
+    public function updateSettings(array $data): array
+    {
+        $current = $this->getReleaseInfo();
+
+        $version = trim($data['version'] ?? $current['version']);
+        $cleanVersion = preg_replace('/[^a-zA-Z0-9\.\-\_]/', '', $version);
+        if (! str_starts_with($cleanVersion, 'v')) {
+            $cleanVersion = 'v'.$cleanVersion;
+        }
+
+        $downloadUrl = trim($data['download_url'] ?? '');
+        $size = trim($data['size'] ?? $current['size']);
+        $releaseNotes = trim($data['release_notes'] ?? $current['release_notes']);
+        $minAndroid = trim($data['min_android'] ?? $current['min_android']);
+
+        $updatedData = array_merge($current, [
+            'version' => $cleanVersion,
+            'download_url' => $downloadUrl,
+            'size' => $size,
+            'release_notes' => $releaseNotes,
+            'min_android' => $minAndroid,
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        $this->saveMetadata($updatedData);
+
+        return $updatedData;
     }
 
     /**
@@ -79,7 +148,6 @@ class AppReleaseService
             $cleanVersion = 'v2.5.0';
         }
 
-        // Format clean filename: e.g. Mobilis-App-v2.5.0.apk
         $extension = $file->getClientOriginalExtension() ?: 'apk';
         $filename = 'Mobilis-App-'.ltrim($cleanVersion, 'v').'.'.$extension;
 
@@ -95,6 +163,7 @@ class AppReleaseService
             'version' => str_starts_with($cleanVersion, 'v') ? $cleanVersion : 'v'.$cleanVersion,
             'filename' => $filename,
             'file_path' => 'uploads/apps/'.$filename,
+            'download_url' => '', // Clear external URL when a new physical file is uploaded
             'size' => $formattedSize,
             'size_bytes' => $sizeBytes,
             'release_notes' => $releaseNotes ?: ($current['release_notes'] ?? 'Updated application build.'),

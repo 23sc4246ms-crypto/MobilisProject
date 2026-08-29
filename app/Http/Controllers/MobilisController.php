@@ -242,6 +242,11 @@ class MobilisController extends Controller
         // Increment verified mobile download counter
         $this->releaseService->incrementDownloadCount();
 
+        // If direct cloud URL is configured (e.g. GitHub Releases / Google Drive / CDN), redirect directly
+        if (! empty($info['download_url'])) {
+            return redirect()->away($info['download_url']);
+        }
+
         // If real file exists on disk, stream real APK file
         if ($filePath && file_exists($filePath)) {
             return response()->download($filePath, $info['filename'], [
